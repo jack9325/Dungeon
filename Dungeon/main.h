@@ -7,6 +7,7 @@
 #include <random>
 #include "Position.h"
 #include "Trigger.h"
+#include "Maze.h"
 
 // Check whether the location is a valid one i.e. not a wall
 bool isPositionValid(Position& loc);

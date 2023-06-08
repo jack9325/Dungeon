@@ -20,7 +20,7 @@ void Creature::setPos(int x, int y)
 	this->pos.y = y;
 }
 
-void Creature::setIcon(char& icon)
+void Creature::setIcon(string& icon)
 {
 	this->icon = icon;
 }
@@ -30,7 +30,7 @@ Position Creature::getPos()
 	return this->pos;
 }
 
-char Creature::getIcon()
+string Creature::getIcon()
 {
 	return this->icon;
 }

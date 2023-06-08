@@ -1,10 +1,13 @@
 #pragma once
 #include "Position.h"
+#include <string>
+
+using namespace std;
 
 class Creature {//creature class 
 protected:
 	Position pos;			// Creature position
-	char icon;			// Creature icon
+	string icon="ขั";			// Creature icon
 	int power;
 public:
 	// Default constructor
@@ -15,13 +18,13 @@ public:
 	void setPos(int x, int y);
 
 	// Set icon
-	void setIcon(char& icon);
+	void setIcon(string& icon);
 
 	// Get position
 	Position getPos();
 
 	// Get Icon
-	char getIcon();
+	string getIcon();
 
 public:
 	/*void update(Hero& hero) {

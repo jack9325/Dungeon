@@ -10,7 +10,7 @@ class Hero {
 
 private:
 	Position pos;			// Hero location
-	char icon = 'H';	// Hero icon
+	std::string icon = "¢Ö";	// Hero icon
 	int	hp;
 	int level = 1;     // Level
 	int	maxExp;		// Level update experience
@@ -31,7 +31,7 @@ public:
 	void setPos(int x, int y);
 
 	// Set icon
-	void setIcon(char& icon);
+	void setIcon(std::string& icon);
 
 	// Set level
 	void setLevel(int level);
@@ -46,7 +46,7 @@ public:
 	Position getPos();
 
 	// Get Icon
-	char getIcon();
+	std::string getIcon();
 
 	// Get level
 	int getLevel();

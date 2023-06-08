@@ -8,7 +8,7 @@ Hero::Hero()
 	this->hp = 100;
 	this->level = 1;
 	this->maxExp = 15;
-	this->icon = 'H';
+	this->icon = "¢Ö";
 	this->pos.x = 1;
 	this->pos.y = 1;
 }
@@ -46,7 +46,7 @@ void Hero::setPos(int x, int y)
 	this->pos.y = y;
 }
 
-void Hero::setIcon(char& icon)
+void Hero::setIcon(string& icon)
 {
 	this->icon = icon;
 }
@@ -71,7 +71,7 @@ Position Hero::getPos()
 	return this->pos;
 }
 
-char Hero::getIcon()
+string Hero::getIcon()
 {
 	return this->icon;
 }
