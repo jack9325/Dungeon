@@ -13,7 +13,7 @@ Hero::Hero()
 	this->pos.y = 1;
 }
 
-Hero::Hero(int x, int y, int level, int maxExp, int currentExp, char icon, int hp)
+Hero::Hero(int x, int y, int level, int maxExp, int currentExp, string& icon, int hp)
 {
 	this->pos.x = x;
 	this->pos.y = y;
@@ -24,7 +24,7 @@ Hero::Hero(int x, int y, int level, int maxExp, int currentExp, char icon, int h
 	this->hp = hp;
 }
 
-Hero::Hero(Position& pos, int level, int maxExp, int currentExp, char icon, int hp)
+Hero::Hero(Position& pos, int level, int maxExp, int currentExp, string& icon, int hp)
 {
 	this->pos = pos;
 	this->level = level;
@@ -99,4 +99,19 @@ int Hero::getHP() const
 void Hero::setHP(int hp)
 {
 	this->hp = hp;
+}
+
+void Hero::move(Position delta) 
+{
+	// Compute the next position
+	Position next = this->pos + delta;
+
+	if (isPositionValid(next))
+	{
+		this->pos = next;
+	}
+	else
+	{
+		cout << "Invalid location\n";
+	}
 }

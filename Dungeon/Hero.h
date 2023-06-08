@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include "Position.h"
+#include "main.h"
+
+using namespace std;
 
 //************************************************************
 // Hero Class, only has requirement part for example
@@ -21,10 +24,10 @@ public:
 	Hero();
 
 	// Setting constructor
-	Hero(int x, int y, int level, int maxExp, int currentExp, char icon, int hp);
+	Hero(int x, int y, int level, int maxExp, int currentExp, string& icon, int hp);
 
 	// Setting constructor
-	Hero(Position& pos, int level, int maxExp, int currentExp, char icon, int hp);
+	Hero(Position& pos, int level, int maxExp, int currentExp, string& icon, int hp);
 
 	// Set position
 	void setPos(Position pos);
@@ -62,7 +65,7 @@ public:
 	void setHP(int hp);
 
 	// Incrementally move the elements 
-	//void move(Position delta);
+	void move(Position delta);
 
 	//// Calculate Gain of EXP
 	//void gainEXP(int points) {

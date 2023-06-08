@@ -7,10 +7,8 @@
 #include <random>
 #include "Position.h"
 #include "Trigger.h"
-#include "Maze.h"
 
-// Check whether the location is a valid one i.e. not a wall
-bool isPositionValid(Position& loc);
+bool isPositionValid(Position& pos);
 
 // clip algroithm
 float clip(float n, float minimun, float maximum);
@@ -18,10 +16,11 @@ float clip(float n, float minimun, float maximum);
 // Check whether two position is close enough，利用 call-by-reference 將計算得到的方向回傳
 bool canSee(Position cPos, Position hPos, Position& pos2);
 
-void generateMaze(int,int);
+void update(bool key[]);
 
-void setMaze();
+void keyUpdate(bool key[]);
 
+void generateMaze(int x, int y);
 void setUsed();
-
+void setMaze();
 void printBoard();
