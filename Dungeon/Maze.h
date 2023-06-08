@@ -20,6 +20,7 @@ public:
 	void randomGenerateHero(Hero& hero);
 	void randomGenerateCreature(Creature& creature);
 	void randomGenerateTrigger(Trigger& trigger);
+	bool isPositionValid(Position& pos);
 	string** board;
 
 private:

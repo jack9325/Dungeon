@@ -92,3 +92,12 @@ void Maze::printBoard()
 		cout << endl;
 	}
 }
+
+bool Maze::isPositionValid(Position& pos)
+{
+	if (this->board[pos.y][pos.x] != this->road)
+	{
+		return false;
+	}
+	return true;
+}
