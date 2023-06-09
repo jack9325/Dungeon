@@ -26,6 +26,6 @@ void keyUpdate(bool key[]);
 void generateMaze(int x, int y);
 void setUsed();
 void setMaze();
-void setupBoard();
+void setupBoard(int row, int col);
 void printBoard();
 

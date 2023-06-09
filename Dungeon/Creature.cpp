@@ -4,7 +4,7 @@ Creature::Creature()
 {
 	this->pos.x = 2;
 	this->pos.y = 2;
-	this->icon = 'C';
+	this->icon = "ขั";
 	this->power = 5;
 }
 

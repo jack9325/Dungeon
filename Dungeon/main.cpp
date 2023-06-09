@@ -51,7 +51,7 @@ int main()
 	{
 		gKeyState[i] = false;
 	}
-	setupBoard();
+	setupBoard(row, col);
 	printBoard();
 
 	clock_t startT, endT;
@@ -130,7 +130,7 @@ void keyUpdate(bool key[])
 
 void isPositionValid(Position& pos)
 {
-	if (board[pos.y][pos.x] != road)
+	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ")
 	{
 		throw exception("Invalid Location");
 	}
@@ -199,6 +199,7 @@ void update(bool key[])
 		try
 		{
 			isPositionValid(delta + hero.getPos());
+			board[hero.getPos().y][hero.getPos().x] = road;
 			hero.move(delta);
 		}
 		catch (const exception& e)
@@ -209,9 +210,9 @@ void update(bool key[])
 
 	// Manipulate update of two triggers using while loop
 
-	//for (int i = 0; i < triggers.size(); i++) {
-	//	triggers[i]->update(hero);
-	//}
+	for (int i = 0; i < triggers.size(); i++) {
+		triggers[i]->update(hero);
+	}
 
 	//creature.update(hero);
 	printBoard();
@@ -282,43 +283,62 @@ void setMaze()
 	}
 }
 
-void setupBoard()
+void setupBoard(int row,int col)
 {
 	setUsed();
 	setMaze();
 	generateMaze(1, 1);
 
-	//Position hPos = getValidRandomPos();
-	//validFlags[hPos.y][hPos.x] = false;
-	//gHero.setPos(hPos);
+	vector<vector<bool>> validFlags(row);
+	for (int i = 0; i < row; i++) {
+		validFlags[i].resize(col);
+		for (int j = 0; j < col; j++) {
+			validFlags[i][j] = board[i][j] == wall ? false : true;
+		}
+	}
 
-	//Position cPos = getValidRandomPos();
-	//validFlags[cPos.y][cPos.x] = false;
-	//gCreature.setPos(cPos);
+	auto getRandomPos = [&row, &col]() {
+		return Position((int)(rand() % col), (int)(rand() % row));
+	};
 
-	//for (int i = 0; i < 2; i++) {
-	//	Trigger* trigger = new Trigger();
-	//	Position tPos = getValidRandomPos();
-	//	validFlags[tPos.y][tPos.x] = false;
-	//	trigger->setPos(tPos);
-	//	gTriggers.push_back(trigger);
-	//}
+	auto getValidRandomPos = [&validFlags, &getRandomPos]() {
+		while (true) {
+			Position pos = getRandomPos();
+			if (validFlags[pos.y][pos.x]) {
+				return pos;
+			}
+		}
+	};
+
+	Position cPos = getValidRandomPos();
+	validFlags[cPos.y][cPos.x] = false;
+	creature.setPos(cPos);
+
+	for (int i = 0; i < 2; i++) {
+		Trigger* trigger = new Trigger();
+		Position tPos = getValidRandomPos();
+		validFlags[tPos.y][tPos.x] = false;
+		trigger->setPos(tPos);
+		triggers.push_back(trigger);
+	}
 }
 
 void printBoard()
 {
+	for (int i = 0; i < triggers.size(); i++)
+	{
+		board[triggers[i]->getPos().y][triggers[i]->getPos().x] = triggers[i]->getIcon();
+	}
+
+	board[creature.getPos().y][creature.getPos().x] = creature.getIcon();
+
+	board[hero.getPos().y][hero.getPos().x] = hero.getIcon();
+
 	for (int i = 0; i < row; i++)
 	{
 		for (int j = 0; j < col; j++)
 		{
-			if (i == hero.getPos().y && j == hero.getPos().x)
-			{
-				cout << hero.getIcon();
-			}
-			else
-			{
-				cout << board[i][j];
-			}
+			cout << board[i][j];
 		}
 		cout << endl;
 	}
