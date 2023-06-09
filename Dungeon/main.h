@@ -5,10 +5,13 @@
 #include <algorithm>	// for max and min function
 #include <vector>
 #include <random>
+#include <stdexcept>
 #include "Position.h"
 #include "Trigger.h"
 
-bool isPositionValid(Position& pos);
+void isPositionValid(Position& pos);
+
+void isInputValid(bool key[]);
 
 // clip algroithm
 float clip(float n, float minimun, float maximum);
@@ -23,4 +26,6 @@ void keyUpdate(bool key[]);
 void generateMaze(int x, int y);
 void setUsed();
 void setMaze();
+void setupBoard();
 void printBoard();
+

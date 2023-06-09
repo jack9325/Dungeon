@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include "Position.h"
-#include "main.h"
 
 using namespace std;
 
@@ -13,7 +12,7 @@ class Hero {
 
 private:
 	Position pos;			// Hero location
-	std::string icon = "¢Ö";	// Hero icon
+	string icon = "¢Ö";	// Hero icon
 	int	hp;
 	int level = 1;     // Level
 	int	maxExp;		// Level update experience
@@ -49,7 +48,7 @@ public:
 	Position getPos();
 
 	// Get Icon
-	std::string getIcon();
+	string getIcon();
 
 	// Get level
 	int getLevel();
@@ -67,25 +66,12 @@ public:
 	// Incrementally move the elements 
 	void move(Position delta);
 
-	//// Calculate Gain of EXP
-	//void gainEXP(int points) {
-	//	int number = points;
-	//	while (number > 0) {
-	//		if (sCurrentExp + number >= sMaxExp) {//level up
-	//			number -= (sMaxExp - sCurrentExp);
-	//			sCurrentExp = 0;
-	//			sMaxExp = (int)((float)sMaxExp * 1.2f);
-	//			sLevel++;
-	//		}
-	//		else {
-	//			sCurrentExp += number;
-	//			number = 0;
-	//		}
-	//	}
-	//}
-	//void damage(int points) {
-	//	hp = hp - points;
-	//	if (hp < 0)
-	//		hp = 0;
-	//}
+	// Calculate Gain of EXP
+	void gainEXP(int points);
+
+	void damage(int points) {
+		hp = hp - points;
+		if (hp < 0)
+			hp = 0;
+	}
 };

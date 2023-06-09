@@ -47,13 +47,11 @@ int main()
 	col = 11;
 
 	bool gKeyState[validInput::INVALID];
-	for (int i = 0; i < validInput::INVALID; i++) 
+	for (int i = 0; i < validInput::INVALID; i++)
 	{
 		gKeyState[i] = false;
 	}
-	setUsed();
-	setMaze();
-	generateMaze(1, 1);
+	setupBoard();
 	printBoard();
 
 	clock_t startT, endT;
@@ -66,7 +64,7 @@ int main()
 		double timeFrame = (double)(endT - startT) / CLOCKS_PER_SEC;
 
 		// Execute the game loop
-		if (timeFrame >= timeLog) 
+		if (timeFrame >= timeLog)
 		{
 			update(gKeyState);
 			startT = clock();
@@ -94,12 +92,12 @@ int main()
 void keyUpdate(bool key[])
 //==================================================================
 {
-	for (int i = 0; i < validInput::INVALID; i++) 
+	for (int i = 0; i < validInput::INVALID; i++)
 	{
 		key[i] = false;
 	}
 	char input = _getch();
-	switch (input) 
+	switch (input)
 	{
 	case 'w':
 		key[validInput::EW] = true;
@@ -130,13 +128,29 @@ void keyUpdate(bool key[])
 	}
 }
 
-bool isPositionValid(Position& pos)
+void isPositionValid(Position& pos)
 {
 	if (board[pos.y][pos.x] != road)
 	{
-		return false;
+		throw exception("Invalid Location");
 	}
-	return true;
+}
+
+void isInputValid(bool key[])
+{
+	bool allInvalid = true;
+	for (int i = 0; i < validInput::INVALID; i++)
+	{
+		if (key[i])
+		{
+			allInvalid = false;
+			break;
+		}
+	}
+	if (allInvalid)
+	{
+		throw exception("Invalid Input");
+	}
 }
 
 void update(bool key[])
@@ -159,33 +173,38 @@ void update(bool key[])
 		delta += Position(0, 1);
 		hasInput = true;
 	}
-	else if (key[validInput::EA]) 
+	else if (key[validInput::EA])
 	{
 		delta = delta - Position(1, 0);
 		hasInput = true;
 	}
-	else if (key[validInput::ED]) 
+	else if (key[validInput::ED])
 	{
 		delta = delta + Position(1, 0);
 		hasInput = true;
 	}
-	else 
+	else
 	{
-		bool allInvalid = true;
-		for (int i = 0; i < validInput::INVALID; i++)
+		try
 		{
-			if (key[i]) 
-			{
-				allInvalid = false;
-				break;
-			}
+			isInputValid(key);
 		}
-		if (allInvalid)
-			std::cout << "invalid input\n";
+		catch (const exception& e)
+		{
+			cout << e.what() << endl;
+		}
 	}
-	if (hasInput) 
+	if (hasInput)
 	{
-		hero.move(delta);
+		try
+		{
+			isPositionValid(delta + hero.getPos());
+			hero.move(delta);
+		}
+		catch (const exception& e)
+		{
+			cout << e.what() << endl;
+		}
 	}
 
 	// Manipulate update of two triggers using while loop
@@ -252,7 +271,7 @@ void setUsed()
 
 void setMaze()
 {
-	board = new string* [row];
+	board = new string * [row];
 	for (int i = 0; i < row; i++)
 	{
 		board[i] = new string[col];
@@ -261,6 +280,29 @@ void setMaze()
 			board[i][j] = wall;
 		}
 	}
+}
+
+void setupBoard()
+{
+	setUsed();
+	setMaze();
+	generateMaze(1, 1);
+
+	//Position hPos = getValidRandomPos();
+	//validFlags[hPos.y][hPos.x] = false;
+	//gHero.setPos(hPos);
+
+	//Position cPos = getValidRandomPos();
+	//validFlags[cPos.y][cPos.x] = false;
+	//gCreature.setPos(cPos);
+
+	//for (int i = 0; i < 2; i++) {
+	//	Trigger* trigger = new Trigger();
+	//	Position tPos = getValidRandomPos();
+	//	validFlags[tPos.y][tPos.x] = false;
+	//	trigger->setPos(tPos);
+	//	gTriggers.push_back(trigger);
+	//}
 }
 
 void printBoard()

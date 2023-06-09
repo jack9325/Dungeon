@@ -105,13 +105,26 @@ void Hero::move(Position delta)
 {
 	// Compute the next position
 	Position next = this->pos + delta;
+	this->pos = next;
+}
 
-	if (isPositionValid(next))
+void Hero::gainEXP(int points)
+{
+	int number = points;
+	while (number > 0)
 	{
-		this->pos = next;
-	}
-	else
-	{
-		cout << "Invalid location\n";
+		//level up
+		if (this->currentExp + number >= this->maxExp)
+		{
+			number -= (this->maxExp - this->currentExp);
+			this->currentExp = 0;
+			this->maxExp = this->maxExp * 1.2;
+			level++;
+		}
+		else
+		{
+			this->currentExp += number;
+			number = 0;
+		}
 	}
 }
