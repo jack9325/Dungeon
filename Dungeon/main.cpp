@@ -7,6 +7,7 @@ Creature* creature;
 Potion* potion;
 Sword* sword;
 Ghost* ghost;
+Rock* rock;
 
 vector<Trigger*> triggers;
 vector<Creature*> creatures;
@@ -19,6 +20,8 @@ const string wall = "\u2588 ";
 const string road = "　";
 
 int row = 0, col = 0;
+
+int level = 0;
 
 const double timeLog = 0.033;
 
@@ -45,22 +48,26 @@ enum validInput
 int main()
 {
 	srand(time(NULL));
-	row = 15;
-	col = 15;
+	row = 19;
+	col = 19;
 
 	bool gKeyState[validInput::INVALID];
 	for (int i = 0; i < validInput::INVALID; i++)
 	{
 		gKeyState[i] = false;
 	}
-	setupBoard(row, col);
-	printBoard();
-
+	system("CLS");
+	cout << "Welcome to Round 1" << endl;
+	if (level == 0)
+	{
+		setupBoard(row, col);
+		printBoard();
+	}
 	clock_t startT, endT;
 	startT = clock();
 	endT = clock();
 
-	while (!gKeyState[validInput::EESC])
+	while (!gKeyState[validInput::EESC] && level == 0)
 	{
 		// Compute the time lap
 		double timeFrame = (double)(endT - startT) / CLOCKS_PER_SEC;
@@ -76,17 +83,89 @@ int main()
 		keyUpdate(gKeyState);
 		endT = clock();
 
-		if (gKeyState[validInput::ESave])
-		{
-			saveMap();
-			gKeyState[validInput::ESave] = false;
-		}
+		//if (gKeyState[validInput::ESave])
+		//{
+		//	saveMap();
+		//	gKeyState[validInput::ESave] = false;
+		//}
 		//else if (gKeyState[validInput::ELoad]) {
 		//	loadMap();
 		//	gKeyState[validInput::ELoad] = false;
 		//}
 	}
+	if (level == 1)
+	{
+		row = 21;
+		col = 21;
+		setupBoard(row, col);
+		printBoard();
+	}
+	system("CLS");
+	cout << "Welcome to Round 2" << endl;
+	cout << "Press Any Key to Start the Round" << endl;
+	while (!gKeyState[validInput::EESC] && level == 1)
+	{
+		// Compute the time lap
+		double timeFrame = (double)(endT - startT) / CLOCKS_PER_SEC;
 
+		// Execute the game loop
+		if (timeFrame >= timeLog)
+		{
+			update(gKeyState);
+			startT = clock();
+		}
+
+		// Update the key
+		keyUpdate(gKeyState);
+		endT = clock();
+
+		//if (gKeyState[validInput::ESave])
+		//{
+		//	saveMap();
+		//	gKeyState[validInput::ESave] = false;
+		//}
+		//else if (gKeyState[validInput::ELoad]) {
+		//	loadMap();
+		//	gKeyState[validInput::ELoad] = false;
+		//}
+	}
+	if (level == 2)
+	{
+		row = 25;
+		col = 25;
+		setupBoard(row, col);
+		printBoard();
+	}
+	system("CLS");
+	cout << "Welcome to Round 3" << endl;
+	cout << "Press Any Key to Start the Round" << endl;
+	while (!gKeyState[validInput::EESC] && level == 2)
+	{
+		// Compute the time lap
+		double timeFrame = (double)(endT - startT) / CLOCKS_PER_SEC;
+
+		// Execute the game loop
+		if (timeFrame >= timeLog)
+		{
+			update(gKeyState);
+			startT = clock();
+		}
+
+		// Update the key
+		keyUpdate(gKeyState);
+		endT = clock();
+
+		//if (gKeyState[validInput::ESave])
+		//{
+		//	saveMap();
+		//	gKeyState[validInput::ESave] = false;
+		//}
+		//else if (gKeyState[validInput::ELoad]) {
+		//	loadMap();
+		//	gKeyState[validInput::ELoad] = false;
+		//}
+	}
+	level++;
 	system("pause");
 	return 0;
 }
@@ -94,6 +173,16 @@ int main()
 void keyUpdate(bool key[])
 //==================================================================
 {
+	if (creatures[0]->getHP() == 0)
+	{
+		level++;
+		return;
+	}
+	else if (hero.getHP() == 0)
+	{
+		cout << "You Lose..." << endl;
+		system("Pause");
+	}
 	for (int i = 0; i < validInput::INVALID; i++)
 	{
 		key[i] = false;
@@ -132,7 +221,7 @@ void keyUpdate(bool key[])
 
 void isPositionValid(Position& pos)
 {
-	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ" && board[pos.y][pos.x] != "Ｐ" && board[pos.y][pos.x] != "Ｓ")
+	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ" && board[pos.y][pos.x] != "Ｐ" && board[pos.y][pos.x] != "Ｓ" && board[pos.y][pos.x] != "Ｒ")
 	{
 		throw exception("Invalid Location");
 	}
@@ -311,7 +400,7 @@ void setMaze()
 	}
 }
 
-void ghostMove(int row,int col)
+void ghostMove(int row, int col)
 {
 	board[ghost->getPos().y][ghost->getPos().x] = "　";
 	vector<vector<bool>> validFlags(row);
@@ -366,7 +455,9 @@ void setupBoard(int row, int col)
 			}
 		}
 	};
-
+	triggers.clear();
+	creatures.clear();
+	items.clear();
 	validFlags[hero.getPos().y][hero.getPos().x] = false;
 
 	creature = new Creature();
@@ -374,12 +465,18 @@ void setupBoard(int row, int col)
 	validFlags[cPos.y][cPos.x] = false;
 	creature->setPos(cPos);
 	creatures.push_back(creature);
-	
+
 	ghost = new Ghost();
-	Position gPos= getValidRandomPos();
+	Position gPos = getValidRandomPos();
 	validFlags[gPos.y][gPos.x] = false;
 	ghost->setPos(gPos);
 	creatures.push_back(ghost);
+
+	rock = new Rock();
+	Position rPos = getValidRandomPos();
+	validFlags[rPos.y][rPos.x] = false;
+	rock->setPos(rPos);
+	creatures.push_back(rock);
 
 	for (int i = 0; i < 2; i++) {
 		Trigger* trigger = new Trigger();
@@ -396,7 +493,7 @@ void setupBoard(int row, int col)
 	items.push_back(potion);
 
 	sword = new Sword();
-	Position sPos= getValidRandomPos();
+	Position sPos = getValidRandomPos();
 	validFlags[sPos.y][sPos.x] = false;
 	sword->setPos(sPos);
 	items.push_back(sword);
@@ -480,5 +577,5 @@ void loadMap()
 	saveFile.open(input);
 	saveFile >> row >> col;
 	setMaze();
-	
+
 }

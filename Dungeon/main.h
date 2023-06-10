@@ -7,6 +7,7 @@
 #include <random>
 #include <stdexcept>
 #include <fstream>
+#include <windows.h>
 #include "Position.h"
 #include "Trigger.h"
 #include "Hero.h"
@@ -15,6 +16,7 @@
 #include "Potion.h"
 #include "Sword.h"
 #include "Ghost.h"
+#include "Rock.h"
 
 void isPositionValid(Position& pos);
 
