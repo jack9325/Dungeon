@@ -8,6 +8,7 @@ Creature::Creature()
 	this->power = 5;
 	this->hp = 100;
 	this->hpLimit = 100;
+	this->name = "Creature";
 }
 
 void Creature::setPos(Position pos)
@@ -84,4 +85,14 @@ void Creature::update(Hero& hero)
 			this->icon = "¡@";
 		}
 	}
+}
+
+string Creature::getOrgIcon()
+{
+	return this->orgIcon;
+}
+
+string Creature::getName()
+{
+	return this->name;
 }

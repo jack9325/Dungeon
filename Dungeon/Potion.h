@@ -10,5 +10,5 @@ public:
 	Potion();
 	void setHealPoint(int healPoint);
 	int getHealPoint();
-	void update(Hero& hero);
+	void update(Hero& hero) override;
 };

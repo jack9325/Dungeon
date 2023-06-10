@@ -1,5 +1,6 @@
 #pragma once
 #include "Position.h"
+#include "Hero.h"
 #include <string>
 
 using namespace std;
@@ -16,4 +17,5 @@ public:
 	Position getPos();
 	void setIcon(string& icon);
 	string getIcon();
+	virtual void update(Hero& hero);
 };

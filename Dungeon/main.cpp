@@ -1,16 +1,16 @@
-﻿#include "Hero.h"
-#include "Position.h"
-#include "Creature.h"
-#include "main.h"
-#include "Potion.h"
+﻿#include "main.h"
 
 using namespace std;
 
 Hero hero;
-Creature creature;
-Potion potion;
+Creature* creature;
+Potion* potion;
+Sword* sword;
+Ghost* ghost;
 
 vector<Trigger*> triggers;
+vector<Creature*> creatures;
+vector<Item*> items;
 
 string** board;
 int** used;
@@ -76,10 +76,11 @@ int main()
 		keyUpdate(gKeyState);
 		endT = clock();
 
-		//if (gKeyState[validInput::ESave]) {
-		//	saveMap();
-		//	gKeyState[validInput::ESave] = false;
-		//}
+		if (gKeyState[validInput::ESave])
+		{
+			saveMap();
+			gKeyState[validInput::ESave] = false;
+		}
 		//else if (gKeyState[validInput::ELoad]) {
 		//	loadMap();
 		//	gKeyState[validInput::ELoad] = false;
@@ -131,7 +132,7 @@ void keyUpdate(bool key[])
 
 void isPositionValid(Position& pos)
 {
-	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ" && board[pos.y][pos.x] != "Ｐ")
+	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ" && board[pos.y][pos.x] != "Ｐ" && board[pos.y][pos.x] != "Ｓ")
 	{
 		throw exception("Invalid Location");
 	}
@@ -156,13 +157,20 @@ void isInputValid(bool key[])
 
 void drawInfo()
 {
+	cout << "--------------------------------------------------------" << endl;
 	cout << "The hero is level " << hero.getLevel() << "(" << hero.getExp() << "/" << hero.getMaxExp() << " to level up)" << endl;
 	cout << "Hero's HP: " << hero.getHP() << " / " << hero.getHPLimit() << endl;
 	cout << "Hero's Attack Power: " << hero.getPower() << endl;
-	cout << "Creature's HP: " << creature.getHP() << " / " << creature.getHPLimit() << endl;
+	cout << "--------------------------------------------------------" << endl;
+	for (int i = 0; i < creatures.size(); i++)
+	{
+		cout << creatures[i]->getName() << "'s HP: " << creatures[i]->getHP() << " / " << creatures[i]->getHPLimit() << "\nAttack Damage: " << creatures[i]->getPower() << endl;
+	}
+	cout << "--------------------------------------------------------" << endl;
 	cout << "Use wsad key to move Hero " << hero.getIcon() << endl;
 	cout << "Every time you step on a trigger T, the hero gets 10 exp." << endl;
 	cout << "(ESC) Exit (1) Save (2) Load" << endl;
+	cout << "--------------------------------------------------------" << endl;
 }
 
 void update(bool key[])
@@ -226,8 +234,15 @@ void update(bool key[])
 		triggers[i]->update(hero);
 	}
 
-	creature.update(hero);
-	potion.update(hero);
+	for (int i = 0; i < creatures.size(); i++)
+	{
+		creatures[i]->update(hero);
+	}
+
+	for (int i = 0; i < items.size(); i++)
+	{
+		items[i]->update(hero);
+	}
 	printBoard();
 }
 
@@ -296,6 +311,35 @@ void setMaze()
 	}
 }
 
+void ghostMove(int row,int col)
+{
+	board[ghost->getPos().y][ghost->getPos().x] = "　";
+	vector<vector<bool>> validFlags(row);
+	for (int i = 0; i < row; i++) {
+		validFlags[i].resize(col);
+		for (int j = 0; j < col; j++) {
+			validFlags[i][j] = board[i][j] == wall ? false : true;
+		}
+	}
+
+	auto getRandomPos = [&row, &col]() {
+		return Position((int)(rand() % col), (int)(rand() % row));
+	};
+
+	auto getValidRandomPos = [&validFlags, &getRandomPos]() {
+		while (true) {
+			Position pos = getRandomPos();
+			if (validFlags[pos.y][pos.x]) {
+				return pos;
+			}
+		}
+	};
+
+	Position gPos = getValidRandomPos();
+	validFlags[gPos.y][gPos.x] = false;
+	ghost->setPos(gPos);
+}
+
 void setupBoard(int row, int col)
 {
 	setUsed();
@@ -325,9 +369,17 @@ void setupBoard(int row, int col)
 
 	validFlags[hero.getPos().y][hero.getPos().x] = false;
 
+	creature = new Creature();
 	Position cPos = getValidRandomPos();
 	validFlags[cPos.y][cPos.x] = false;
-	creature.setPos(cPos);
+	creature->setPos(cPos);
+	creatures.push_back(creature);
+	
+	ghost = new Ghost();
+	Position gPos= getValidRandomPos();
+	validFlags[gPos.y][gPos.x] = false;
+	ghost->setPos(gPos);
+	creatures.push_back(ghost);
 
 	for (int i = 0; i < 2; i++) {
 		Trigger* trigger = new Trigger();
@@ -337,22 +389,36 @@ void setupBoard(int row, int col)
 		triggers.push_back(trigger);
 	}
 
+	potion = new Potion();
 	Position pPos = getValidRandomPos();
 	validFlags[pPos.y][pPos.x] = false;
-	potion.setPos(pPos);
+	potion->setPos(pPos);
+	items.push_back(potion);
+
+	sword = new Sword();
+	Position sPos= getValidRandomPos();
+	validFlags[sPos.y][sPos.x] = false;
+	sword->setPos(sPos);
+	items.push_back(sword);
 }
 
 void printBoard()
 {
+	ghostMove(row, col);
 	for (int i = 0; i < triggers.size(); i++)
 	{
 		board[triggers[i]->getPos().y][triggers[i]->getPos().x] = triggers[i]->getIcon();
 	}
 
-	board[creature.getPos().y][creature.getPos().x] = creature.getIcon();
+	for (int i = 0; i < creatures.size(); i++)
+	{
+		board[creatures[i]->getPos().y][creatures[i]->getPos().x] = creatures[i]->getIcon();
+	}
 
-	board[potion.getPos().y][potion.getPos().x] = potion.getIcon();
-
+	for (int i = 0; i < items.size(); i++)
+	{
+		board[items[i]->getPos().y][items[i]->getPos().x] = items[i]->getIcon();
+	}
 	board[hero.getPos().y][hero.getPos().x] = hero.getIcon();
 
 	for (int i = 0; i < row; i++)
@@ -364,4 +430,55 @@ void printBoard()
 		cout << endl;
 	}
 	drawInfo();
+}
+
+void saveMap()
+{
+	system("CLS");
+	cout << "Input file name for saving or Exit to leave saving." << std::endl;
+	cout << "Input: ";
+	string input;
+	cin >> input;
+	if (input.compare("Exit") == 0)
+	{
+		return;
+	}
+	ofstream saveFile(input);
+
+	saveFile << row << " " << col << endl;
+
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			saveFile << board[i][j];
+		}
+		saveFile << endl;
+	}
+
+	saveFile << hero.getPos() << " " << hero.getIcon() << " " << hero.getHP() << " " << hero.getHPLimit() << " " << hero.getLevel() << " " << hero.getExp() << " " << hero.getMaxExp() << " " << hero.getPower() << endl;
+	//saveFile << creature.getPos() << " " << creature.getOrgIcon() << " " << creature.getIcon() << " " << creature.getHP() << " " << creature.getHPLimit() << " " << creature.getPower() << " " << endl;
+	saveFile << triggers.size() << endl;
+	for (int i = 0; i < triggers.size(); i++) {
+		saveFile << triggers[i]->getPos() << " " << triggers[i]->getIcon() << " " << triggers[i]->getExpAmount() << endl;
+	}
+	saveFile.close();
+}
+
+void loadMap()
+{
+	system("CLS");
+	cout << "Input file name for loading or Exit to leave saving." << std::endl;
+	cout << "Input: ";
+	string input;
+	cin >> input;
+	if (input.compare("Exit") == 0)
+	{
+		return;
+	}
+	ifstream saveFile;
+	saveFile.open(input);
+	saveFile >> row >> col;
+	setMaze();
+	
 }

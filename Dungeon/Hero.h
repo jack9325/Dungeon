@@ -59,4 +59,5 @@ public:
 	void gainEXP(int points);
 	void getDamage(int points);
 	void heal(int healPoint);
+	void getEquipment(int power);
 };

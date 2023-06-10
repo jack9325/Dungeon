@@ -6,8 +6,15 @@
 #include <vector>
 #include <random>
 #include <stdexcept>
+#include <fstream>
 #include "Position.h"
 #include "Trigger.h"
+#include "Hero.h"
+#include "Position.h"
+#include "Creature.h"
+#include "Potion.h"
+#include "Sword.h"
+#include "Ghost.h"
 
 void isPositionValid(Position& pos);
 
@@ -26,8 +33,17 @@ void update(bool key[]);
 void keyUpdate(bool key[]);
 
 void generateMaze(int x, int y);
+
 void setUsed();
+
 void setMaze();
+
+void ghostMove();
+
 void setupBoard(int row, int col);
+
 void printBoard();
 
+void saveMap();
+
+void loadMap();

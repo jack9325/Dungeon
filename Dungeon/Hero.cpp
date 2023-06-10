@@ -146,7 +146,7 @@ void Hero::gainEXP(int points)
 			this->currentExp = 0;
 			this->maxExp = this->maxExp * 1.2;
 			level++;
-			this->power *= 1.3;
+			this->power *= 1.5;
 		}
 		else
 		{
@@ -181,4 +181,10 @@ void Hero::heal(int healPoint)
 		this->hp = this->hpLimit;
 	}
 	cout << "Hero get " << healPoint << " points heal!" << endl;
+}
+
+void Hero::getEquipment(int power)
+{
+	this->power += power;
+	cout << "Hero get an equipment and get " << power << " attack points!" << endl;
 }

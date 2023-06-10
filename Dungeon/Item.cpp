@@ -33,3 +33,8 @@ string Item::getIcon()
 {
 	return this->icon;
 }
+
+void Item::update(Hero& hero)
+{
+
+}

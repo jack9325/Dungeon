@@ -8,10 +8,13 @@ using namespace std;
 class Creature {//creature class 
 protected:
 	Position pos;			// Creature position
-	string icon="ขั";			// Creature icon
+	string icon = "ขั";		// Creature icon
+	string orgIcon = "ขั";
+	string name;
 	int power;
 	int hp;
 	int hpLimit;
+	
 public:
 	// Default constructor
 	Creature();
@@ -30,5 +33,7 @@ public:
 	int getHP();
 	void setHPLimit(int hpLimit);
 	int getHPLimit();
-	void update(Hero& hero);
+	virtual void update(Hero& hero);
+	string getOrgIcon();
+	string getName();
 };
