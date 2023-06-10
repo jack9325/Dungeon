@@ -11,6 +11,8 @@ Hero::Hero()
 	this->icon = "¢Ö";
 	this->pos.x = 1;
 	this->pos.y = 1;
+	this->power = 10;
+	this->hpLimit = 100;
 }
 
 Hero::Hero(int x, int y, int level, int maxExp, int currentExp, string& icon, int hp)
@@ -22,6 +24,8 @@ Hero::Hero(int x, int y, int level, int maxExp, int currentExp, string& icon, in
 	this->currentExp = currentExp;
 	this->icon = icon;
 	this->hp = hp;
+	this->power = 10;
+	this->hpLimit = hp;
 }
 
 Hero::Hero(Position& pos, int level, int maxExp, int currentExp, string& icon, int hp)
@@ -32,6 +36,8 @@ Hero::Hero(Position& pos, int level, int maxExp, int currentExp, string& icon, i
 	this->currentExp = currentExp;
 	this->icon = icon;
 	this->hp = hp;
+	this->power = 10;
+	this->hpLimit = hp;
 }
 
 void Hero::setPos(Position pos)
@@ -101,6 +107,26 @@ void Hero::setHP(int hp)
 	this->hp = hp;
 }
 
+void Hero::setHPLimit(int hpLimit)
+{
+	this->hpLimit = hpLimit;
+}
+
+int Hero::getHPLimit()
+{
+	return this->hpLimit;
+}
+
+void Hero::setPower(int power)
+{
+	this->power = power;
+}
+
+int Hero::getPower()
+{
+	return this->power;
+}
+
 void Hero::move(Position delta) 
 {
 	// Compute the next position
@@ -120,6 +146,7 @@ void Hero::gainEXP(int points)
 			this->currentExp = 0;
 			this->maxExp = this->maxExp * 1.2;
 			level++;
+			this->power *= 1.3;
 		}
 		else
 		{
@@ -127,4 +154,31 @@ void Hero::gainEXP(int points)
 			number = 0;
 		}
 	}
+	cout << "Hero get " << points << " EXP Points!" << endl;
+}
+
+void Hero::getDamage(int points)
+{
+	this->hp -= points;
+	if (hp < 0)
+	{
+		hp = 0;
+	}
+	if (points > 0)
+	{
+		cout << "Hero get " << points << " damage!" << endl;
+	}
+}
+
+void Hero::heal(int healPoint)
+{
+	if (this->hp + healPoint < this->hpLimit)
+	{
+		this->hp += healPoint;
+	}
+	else
+	{
+		this->hp = this->hpLimit;
+	}
+	cout << "Hero get " << healPoint << " points heal!" << endl;
 }

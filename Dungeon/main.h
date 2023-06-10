@@ -19,6 +19,8 @@ float clip(float n, float minimun, float maximum);
 // Check whether two position is close enough，利用 call-by-reference 將計算得到的方向回傳
 bool canSee(Position cPos, Position hPos, Position& pos2);
 
+void drawInfo();
+
 void update(bool key[]);
 
 void keyUpdate(bool key[]);

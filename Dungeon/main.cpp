@@ -2,11 +2,13 @@
 #include "Position.h"
 #include "Creature.h"
 #include "main.h"
+#include "Potion.h"
 
 using namespace std;
 
 Hero hero;
 Creature creature;
+Potion potion;
 
 vector<Trigger*> triggers;
 
@@ -43,8 +45,8 @@ enum validInput
 int main()
 {
 	srand(time(NULL));
-	row = 11;
-	col = 11;
+	row = 15;
+	col = 15;
 
 	bool gKeyState[validInput::INVALID];
 	for (int i = 0; i < validInput::INVALID; i++)
@@ -73,7 +75,6 @@ int main()
 		// Update the key
 		keyUpdate(gKeyState);
 		endT = clock();
-
 
 		//if (gKeyState[validInput::ESave]) {
 		//	saveMap();
@@ -130,7 +131,7 @@ void keyUpdate(bool key[])
 
 void isPositionValid(Position& pos)
 {
-	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ")
+	if (board[pos.y][pos.x] != road && board[pos.y][pos.x] != "Ｔ" && board[pos.y][pos.x] != "Ｃ" && board[pos.y][pos.x] != "Ｐ")
 	{
 		throw exception("Invalid Location");
 	}
@@ -151,6 +152,17 @@ void isInputValid(bool key[])
 	{
 		throw exception("Invalid Input");
 	}
+}
+
+void drawInfo()
+{
+	cout << "The hero is level " << hero.getLevel() << "(" << hero.getExp() << "/" << hero.getMaxExp() << " to level up)" << endl;
+	cout << "Hero's HP: " << hero.getHP() << " / " << hero.getHPLimit() << endl;
+	cout << "Hero's Attack Power: " << hero.getPower() << endl;
+	cout << "Creature's HP: " << creature.getHP() << " / " << creature.getHPLimit() << endl;
+	cout << "Use wsad key to move Hero " << hero.getIcon() << endl;
+	cout << "Every time you step on a trigger T, the hero gets 10 exp." << endl;
+	cout << "(ESC) Exit (1) Save (2) Load" << endl;
 }
 
 void update(bool key[])
@@ -214,7 +226,8 @@ void update(bool key[])
 		triggers[i]->update(hero);
 	}
 
-	//creature.update(hero);
+	creature.update(hero);
+	potion.update(hero);
 	printBoard();
 }
 
@@ -283,7 +296,7 @@ void setMaze()
 	}
 }
 
-void setupBoard(int row,int col)
+void setupBoard(int row, int col)
 {
 	setUsed();
 	setMaze();
@@ -310,6 +323,8 @@ void setupBoard(int row,int col)
 		}
 	};
 
+	validFlags[hero.getPos().y][hero.getPos().x] = false;
+
 	Position cPos = getValidRandomPos();
 	validFlags[cPos.y][cPos.x] = false;
 	creature.setPos(cPos);
@@ -321,6 +336,10 @@ void setupBoard(int row,int col)
 		trigger->setPos(tPos);
 		triggers.push_back(trigger);
 	}
+
+	Position pPos = getValidRandomPos();
+	validFlags[pPos.y][pPos.x] = false;
+	potion.setPos(pPos);
 }
 
 void printBoard()
@@ -332,6 +351,8 @@ void printBoard()
 
 	board[creature.getPos().y][creature.getPos().x] = creature.getIcon();
 
+	board[potion.getPos().y][potion.getPos().x] = potion.getIcon();
+
 	board[hero.getPos().y][hero.getPos().x] = hero.getIcon();
 
 	for (int i = 0; i < row; i++)
@@ -342,4 +363,5 @@ void printBoard()
 		}
 		cout << endl;
 	}
+	drawInfo();
 }

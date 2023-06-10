@@ -6,6 +6,8 @@ Creature::Creature()
 	this->pos.y = 2;
 	this->icon = "ขั";
 	this->power = 5;
+	this->hp = 100;
+	this->hpLimit = 100;
 }
 
 void Creature::setPos(Position pos)
@@ -33,4 +35,53 @@ Position Creature::getPos()
 string Creature::getIcon()
 {
 	return this->icon;
+}
+
+void Creature::setPower(int power)
+{
+	this->power = power;
+}
+
+int Creature::getPower()
+{
+	return this->power;
+}
+
+void Creature::setHP(int hp)
+{
+	this->hp = hp;
+}
+
+int Creature::getHP()
+{
+	return this->hp;
+}
+
+void Creature::setHPLimit(int hpLimit)
+{
+	this->hpLimit = hpLimit;
+}
+
+int Creature::getHPLimit()
+{
+	return this->hpLimit;
+}
+
+void Creature::update(Hero& hero)
+{
+	if (this->pos.x == hero.getPos().x && this->pos.y == hero.getPos().y)
+	{
+		hero.getDamage(this->power);
+		if (this->hp - hero.getPower() >= 0)
+		{
+			this->hp -= hero.getPower();
+			cout << "Creature get " << hero.getPower() << " damage!" << endl;
+		}
+		else
+		{
+			this->hp = 0;
+			this->power = 0;
+			this->icon = "ก@";
+		}
+	}
 }
