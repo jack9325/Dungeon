@@ -1,7 +1,18 @@
+/***********************************************************************
+ * File: Hero.cpp
+ * Author: B11115029 白安睿
+ * Create Date: 2023/5/28
+ * Editor: B11115029 白安睿
+ * Update Date: 2023/6/11
+ * Description: The implement of Hero.h
+ * ***********************************************************************/
 #include "Hero.h"
 
 using namespace std;
 
+// Intent: Initialize the Hero.
+// Pre: None.
+// Post: The Hero will be initialized to specified value
 Hero::Hero()
 {
 	this->currentExp = 0;
@@ -15,6 +26,9 @@ Hero::Hero()
 	this->hpLimit = 100;
 }
 
+// Intent: Initialize the Hero with the input value
+// Pre: A integer named x,a integer named y,a integer named level,a integer named maxExp,a integer named currentExp,a string reference named icon,a integer named hp
+// Post: The value of the class will be initialized with input value
 Hero::Hero(int x, int y, int level, int maxExp, int currentExp, string& icon, int hp)
 {
 	this->pos.x = x;
@@ -28,6 +42,9 @@ Hero::Hero(int x, int y, int level, int maxExp, int currentExp, string& icon, in
 	this->hpLimit = hp;
 }
 
+// Intent: Initialize the Hero with the input value
+// Pre: A position reference named pos,a integer named level,a integer named maxExp,a integer named currentExp,a string reference named icon,a integer named hp
+// Post: The value of the class will be initialized with input value
 Hero::Hero(Position& pos, int level, int maxExp, int currentExp, string& icon, int hp)
 {
 	this->pos = pos;
@@ -40,23 +57,35 @@ Hero::Hero(Position& pos, int level, int maxExp, int currentExp, string& icon, i
 	this->hpLimit = hp;
 }
 
+// Intent: Set the hero's position
+// Pre: A position named pos
+// Post: The position of hero will be set to input position
 void Hero::setPos(Position pos)
 {
 	this->pos.x = pos.x;
 	this->pos.y = pos.y;
 }
 
+// Intent: Set the hero's position
+// Pre: A integer named x,a integer named y
+// Post: The position of hero will be set to input value
 void Hero::setPos(int x, int y)
 {
 	this->pos.x = x;
 	this->pos.y = y;
 }
 
+// Intent: Set the hero's icon
+// Pre: A string reference named icon
+// Post: The icon will be set to input icon
 void Hero::setIcon(string& icon)
 {
 	this->icon = icon;
 }
 
+// Intent: Set the hero's level
+// Pre: 
+// Post: 
 void Hero::setLevel(int level)
 {
 	this->level = level;
