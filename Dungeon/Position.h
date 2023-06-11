@@ -1,3 +1,11 @@
+/***********************************************************************
+ * File: Position.h
+ * Author: B11115029 白安睿
+ * Create Date: 2023/
+ * Editor: B11115029 白安睿
+ * Update Date: 2023/
+ * Description: 
+ * ***********************************************************************/
 #pragma once
 #include <iostream>
 
@@ -5,49 +13,19 @@ class Position {
 public:
 	int x, y; 
 
-	Position() : x(0), y(0) {}
-	Position(int x, int y) : x(x), y(y) {}
-	Position(const Position& ref) { *this = ref; }
+	Position();
+	Position(int x, int y);
+	Position(const Position& ref);
 
 	// Operator overloading
-	Position operator+(const Position& rhs) const {
-		return Position(x + rhs.x, y + rhs.y);
-	}
-
-	Position& operator=(const Position& rhs)
-	{
-		this->x = rhs.x;
-		this->y = rhs.y;
-		return *this;
-	}
-
-	Position& operator+=(const Position& rhs) {
-		x += rhs.x;
-		y += rhs.y;
-		return *this;
-	}
-	Position operator-(const Position& rhs) const {
-		return Position(x - rhs.x, y - rhs.y);
-	}
-	Position& operator-=(const Position& rhs) {
-		x -= rhs.x;
-		y -= rhs.y;
-		return *this;
-	}
-	Position operator*(int scale) const {
-		return Position(x * scale, y * scale);
-	}
-	bool operator==(const Position& rhs) const {
-		return x == rhs.x && y == rhs.y;
-	}
-	bool operator!=(const Position& rhs) const {
-		return !(*this == rhs);
-	}
-
-	friend std::ostream& operator<<(std::ostream& oStream, const Position& pos) {
-		return oStream << pos.x << " " << pos.y;
-	}
-	friend std::istream& operator>>(std::istream& iStream, Position& pos) {
-		return iStream >> pos.x >> pos.y;
-	}
+	Position operator+(const Position& rhs) const;
+	Position& operator=(const Position& rhs);
+	Position& operator+=(const Position& rhs);
+	Position operator-(const Position& rhs) const;
+	Position& operator-=(const Position& rhs);
+	Position operator*(int scale) const;
+	bool operator==(const Position& rhs) const;
+	bool operator!=(const Position& rhs) const;
+	friend std::ostream& operator<<(std::ostream& oStream, const Position& pos);
+	friend std::istream& operator>>(std::istream& iStream, Position& pos);
 };

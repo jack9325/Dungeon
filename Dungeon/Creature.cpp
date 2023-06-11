@@ -22,7 +22,7 @@ Creature::Creature()
 	this->name = "Creature";
 }
 
-// Intent: Set the creature's position.
+// Intent: Set creature's position.
 // Pre: A Position.
 // Post: The creature's position will be set to input position
 void Creature::setPos(Position pos)
@@ -31,7 +31,7 @@ void Creature::setPos(Position pos)
 	this->pos.y = pos.y;
 }
 
-// Intent: Set the creature's position.
+// Intent: Set creature's position.
 // Pre: Two integer named x and y.
 // Post: The position of x will be set to input x,the position of y will be set to input y
 void Creature::setPos(int x, int y)
@@ -40,7 +40,7 @@ void Creature::setPos(int x, int y)
 	this->pos.y = y;
 }
 
-// Intent: Set the creature's icon
+// Intent: Set creature's icon
 // Pre: A string named icon
 // Post: The creature's icon will be set to input icon
 void Creature::setIcon(string& icon)
@@ -48,7 +48,7 @@ void Creature::setIcon(string& icon)
 	this->icon = icon;
 }
 
-// Intent: Get the creature's position
+// Intent: Get creature's position
 // Pre: None.
 // Post: Return the position of creature
 Position Creature::getPos()
@@ -56,7 +56,7 @@ Position Creature::getPos()
 	return this->pos;
 }
 
-// Intent: Get the creature's icon
+// Intent: Get creature's icon
 // Pre: None.
 // Post: Return the position of icon
 string Creature::getIcon()
@@ -64,7 +64,7 @@ string Creature::getIcon()
 	return this->icon;
 }
 
-// Intent: Set the creature's power
+// Intent: Set creature's power
 // Pre: A integer named power
 // Post: The creature's power will be set to input power
 void Creature::setPower(int power)
@@ -72,15 +72,15 @@ void Creature::setPower(int power)
 	this->power = power;
 }
 
-// Intent: Get the creature's power
+// Intent: Get creature's power
 // Pre: None.
-// Post: Return the creature's power
+// Post: Return creature's power
 int Creature::getPower()
 {
 	return this->power;
 }
 
-// Intent: Set the creature's HP
+// Intent: Set creature's HP
 // Pre: A integer named HP
 // Post: The creature's HP will be set to input HP
 void Creature::setHP(int hp)
@@ -88,15 +88,15 @@ void Creature::setHP(int hp)
 	this->hp = hp;
 }
 
-// Intent: Get the creature's HP
+// Intent: Get creature's HP
 // Pre: None.
-// Post: Return the creature's HP
+// Post: Return creature's HP
 int Creature::getHP()
 {
 	return this->hp;
 }
 
-// Intent: Set the creature's Limit HP
+// Intent: Set creature's Limit HP
 // Pre: A integer named hpLimit
 // Post: The Limit HP will be set to input hpLimit
 void Creature::setHPLimit(int hpLimit)
@@ -148,9 +148,9 @@ string Creature::getOrgIcon()
 	return this->orgIcon;
 }
 
-// Intent: Get the creature's name
+// Intent: Get creature's name
 // Pre: None.
-// Post: Return the creature's name
+// Post: Return creature's name
 string Creature::getName()
 {
 	return this->name;

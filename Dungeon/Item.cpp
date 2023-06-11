@@ -1,5 +1,16 @@
+/***********************************************************************
+ * File: Item.cpp
+ * Author: B11115029 白安睿
+ * Create Date: 2023/5/28
+ * Editor: B11115029 白安睿
+ * Update Date: 2023/6/11
+ * Description: The implement of Item.h
+ * ***********************************************************************/
 #include "Item.h"
 
+// Intent: 
+// Pre: 
+// Post: 
 Item::Item()
 {
 	this->icon = "";
